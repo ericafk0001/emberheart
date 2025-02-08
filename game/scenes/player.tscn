@@ -1,7 +1,23 @@
-[gd_scene load_steps=19 format=3 uid="uid://cqsasnstdgl0g"]
+[gd_scene load_steps=23 format=3 uid="uid://cqsasnstdgl0g"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_cewha"]
 [ext_resource type="Texture2D" uid="uid://c5je8w87a841m" path="res://assets/sprites/character.png" id="2_hflpi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y7lav"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(0, 720, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jplwp"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(48, 720, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_unbdt"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(96, 720, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8qhhp"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(144, 720, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qtwm5"]
 atlas = ExtResource("2_hflpi")
@@ -61,6 +77,23 @@ region = Rect2(240, 96, 48, 48)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_e8f1n"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y7lav")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jplwp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_unbdt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8qhhp")
+}],
+"loop": true,
+"name": &"dash",
+"speed": 10.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qtwm5")
@@ -131,8 +164,9 @@ script = ExtResource("1_cewha")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -15)
 sprite_frames = SubResource("SpriteFrames_e8f1n")
-animation = &"jump"
+animation = &"dash"
 autoplay = "idle"
+frame_progress = 0.539655
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, -15)
@@ -146,5 +180,9 @@ one_shot = true
 wait_time = 0.18
 one_shot = true
 
+[node name="DashTimer" type="Timer" parent="."]
+wait_time = 0.12
+
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
+[connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
