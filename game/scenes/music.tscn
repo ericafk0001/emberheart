@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnk0qubeit54b"]
+
+[ext_resource type="AudioStream" uid="uid://c3cmh4xbbq76d" path="res://assets/music/Forest Theme - D Minor - Jordan Ottesen.mp3" id="1_uusre"]
+
+[node name="Music" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_uusre")
+autoplay = true
+bus = &"Music"
