@@ -9,11 +9,13 @@ const SPEED = 140.0
 const JUMP_VELOCITY = -275.0
 const GRAVITY = -960.0
 const DASH_SPEED = 360.0
+const MAX_JUMPS = 2
 
 var is_jumping = false
 var jump_buffered = false
 var has_coyote_time = false
 var is_dashing = false
+var jumps = 0
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -22,16 +24,25 @@ func _physics_process(delta: float) -> void:
 
 	# Handle jump.
 	if Input.is_action_just_pressed("jump"):
-		if is_on_floor() && !is_dashing || !coyote_timer.is_stopped() && !is_dashing:
+		if jumps == 0:
+			if is_on_floor() && !is_dashing || !coyote_timer.is_stopped() && !is_dashing:
+				jumps += 1
+				is_jumping = true
+				jump_buffered = false
+				velocity.y = JUMP_VELOCITY
+				has_coyote_time = false 
+				coyote_timer.stop()  # Stop coyote timer when a jump is executed
+		elif jumps == 1:
+			jumps += 1
 			is_jumping = true
 			jump_buffered = false
 			velocity.y = JUMP_VELOCITY
 			has_coyote_time = false 
 			coyote_timer.stop()  # Stop coyote timer when a jump is executed
-
-		else:
+		elif jumps >= 2:
 			jump_buffered = true
 			jump_buffer_timer.start()
+			
 
 	var direction := Input.get_axis("move_left", "move_right")
 	
@@ -73,6 +84,7 @@ func _physics_process(delta: float) -> void:
 	
 	#landing detection
 	if !was_on_floor && is_on_floor() && is_jumping:
+		jumps = 0
 		is_jumping = false 
 		if jump_buffered:
 			is_jumping = true
