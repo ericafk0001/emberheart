@@ -48,6 +48,7 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("dash") && !is_dashing:
 		if direction:
+			jumps += 1
 			is_dashing = true
 			velocity.x = direction * DASH_SPEED
 			velocity.y = 0
