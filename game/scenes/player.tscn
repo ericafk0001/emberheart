@@ -1,7 +1,35 @@
-[gd_scene load_steps=23 format=3 uid="uid://cqsasnstdgl0g"]
+[gd_scene load_steps=32 format=3 uid="uid://cqsasnstdgl0g"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_cewha"]
 [ext_resource type="Texture2D" uid="uid://c5je8w87a841m" path="res://assets/sprites/character.png" id="2_hflpi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0rfcc"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(240, 768, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1k80"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(0, 768, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wva5k"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(48, 768, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_678n8"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(96, 768, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jkxwy"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(144, 768, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oh5bn"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(192, 768, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vei2a"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(240, 768, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y7lav"]
 atlas = ExtResource("2_hflpi")
@@ -75,8 +103,47 @@ region = Rect2(192, 96, 48, 48)
 atlas = ExtResource("2_hflpi")
 region = Rect2(240, 96, 48, 48)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ag87a"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(144, 672, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0of2h"]
+atlas = ExtResource("2_hflpi")
+region = Rect2(192, 672, 48, 48)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_e8f1n"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0rfcc")
+}],
+"loop": true,
+"name": &"crouch_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e1k80")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wva5k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_678n8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jkxwy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oh5bn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vei2a")
+}],
+"loop": true,
+"name": &"crouch_run",
+"speed": 8.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_y7lav")
@@ -150,11 +217,21 @@ animations = [{
 "loop": true,
 "name": &"run",
 "speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ag87a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0of2h")
+}],
+"loop": true,
+"name": &"wall_slide",
+"speed": 10.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8gxfw"]
-radius = 5.0
-height = 16.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uru2a"]
+size = Vector2(7.875, 14)
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 5
@@ -164,16 +241,16 @@ script = ExtResource("1_cewha")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -15)
 sprite_frames = SubResource("SpriteFrames_e8f1n")
-animation = &"dash"
+animation = &"wall_slide"
 autoplay = "idle"
-frame_progress = 0.539655
+frame_progress = 0.928799
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, -15)
-shape = SubResource("CapsuleShape2D_8gxfw")
+position = Vector2(-0.5, -14)
+shape = SubResource("RectangleShape2D_uru2a")
 
 [node name="JumpBufferTimer" type="Timer" parent="."]
-wait_time = 0.16
+wait_time = 0.17
 one_shot = true
 
 [node name="CoyoteTimer" type="Timer" parent="."]
@@ -183,6 +260,15 @@ one_shot = true
 [node name="DashTimer" type="Timer" parent="."]
 wait_time = 0.12
 
+[node name="WallJumpTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="DashCooldownTimer" type="Timer" parent="."]
+wait_time = 6.0
+
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
 [connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="WallJumpTimer" to="." method="_on_wall_jump_timer_timeout"]
+[connection signal="timeout" from="DashCooldownTimer" to="." method="_on_dash_cooldown_timer_timeout"]
