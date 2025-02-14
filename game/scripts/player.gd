@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var dash_timer: Timer = $DashTimer
 @onready var dash_cooldown_timer: Timer = $DashCooldownTimer
 @onready var wall_jump_timer: Timer = $WallJumpTimer
+@onready var dash_label: Control = %AbilityUI/DashLabel
 
 const SPEED = 140.0
 const JUMP_VELOCITY = -280.0
@@ -25,12 +26,14 @@ var is_wall_sliding
 
 func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("move_left", "move_right")
-	if is_on_wall_only() && !is_on_floor() && round(direction * get_wall_normal().x) == -1 && !do_wall_jump:
+	if is_on_wall_only() && !is_on_floor() && round(direction * get_wall_normal().x) == -1 && !do_wall_jump && velocity.y > 0:
 		is_wall_sliding = true
 		velocity.y = WALL_SLIDE_SPEED * delta
 	elif !is_on_floor() && !is_dashing:
 		is_wall_sliding = false
 		velocity += calculate_gravity() * delta
+	else:
+		is_wall_sliding = false
 
 	# Handle jump.
 	if Input.is_action_just_pressed("jump"):
@@ -61,6 +64,12 @@ func _physics_process(delta: float) -> void:
 		else:
 			is_dashing = false
 	
+	#cooldowns
+	if dash_cooldown_timer.time_left > 0:
+		dash_label.text = "Time Left: %.2f" % dash_cooldown_timer.time_left
+	else:
+		dash_label.text = "Dash: Avaliable"
+		
 	#Flip Sprite
 	if is_wall_sliding:
 		if direction < 0:

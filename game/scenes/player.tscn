@@ -241,9 +241,8 @@ script = ExtResource("1_cewha")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -15)
 sprite_frames = SubResource("SpriteFrames_e8f1n")
-animation = &"wall_slide"
+animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.928799
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, -14)
@@ -266,6 +265,9 @@ one_shot = true
 
 [node name="DashCooldownTimer" type="Timer" parent="."]
 wait_time = 6.0
+one_shot = true
+
+[node name="Raycasts" type="Node2D" parent="."]
 
 [connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]

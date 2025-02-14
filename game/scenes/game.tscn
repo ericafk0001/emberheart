@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://i8j8b0xql6b1"]
+[gd_scene load_steps=19 format=3 uid="uid://i8j8b0xql6b1"]
 
 [ext_resource type="PackedScene" uid="uid://bblcss1ecyxn1" path="res://scenes/killzone.tscn" id="1_hff50"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_pfggd"]
 [ext_resource type="PackedScene" uid="uid://cqsasnstdgl0g" path="res://scenes/player.tscn" id="1_v6pap"]
 [ext_resource type="PackedScene" uid="uid://bm87j05omfwol" path="res://scenes/currency_ui.tscn" id="2_nva2e"]
 [ext_resource type="Texture2D" uid="uid://ddndmm7cufqx6" path="res://assets/sprites/spring_.png" id="2_tkm24"]
+[ext_resource type="PackedScene" uid="uid://ct3wdj4o5hkg5" path="res://scenes/ability_ui.tscn" id="3_mq0sc"]
 [ext_resource type="PackedScene" uid="uid://b35f7pkac736h" path="res://scenes/platform.tscn" id="3_n4d3i"]
 [ext_resource type="Texture2D" uid="uid://5f1x006hvj7d" path="res://assets/sprites/sky_.png" id="4_4upij"]
 [ext_resource type="PackedScene" uid="uid://b1f0uufvs8q1f" path="res://scenes/coin.tscn" id="4_wjl3y"]
@@ -357,6 +358,10 @@ script = ExtResource("1_pfggd")
 [node name="CanvasLayer" type="CanvasLayer" parent="GameManager"]
 
 [node name="CurrencyUI" parent="GameManager/CanvasLayer" instance=ExtResource("2_nva2e")]
+unique_name_in_owner = true
+
+[node name="AbilityUI" parent="GameManager/CanvasLayer" instance=ExtResource("3_mq0sc")]
+unique_name_in_owner = true
 
 [node name="Killzone" parent="." instance=ExtResource("1_hff50")]
 position = Vector2(101, 98)
